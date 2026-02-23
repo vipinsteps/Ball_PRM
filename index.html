@@ -2238,8 +2238,7 @@ if ('serviceWorker' in navigator) {
   </script>
 
 </div>
-
-<!-- ================= LOGIN SCRIPT ================= -->
+<!-- ================= LICENSE SCRIPT ================= -->
 <script>
 /* ===== LICENSE VALIDATION ===== */
 
@@ -2252,7 +2251,6 @@ function isValidLicense(key) {
   const randomPart = parts[2];
   const checksum = parts[3];
 
-  // 🔒 SECRET RULE (do not change casually)
   const secret = "MUV@CNC";
   const expected = btoa(randomPart + secret).substring(0, 4);
 
