@@ -85,13 +85,13 @@ if ('serviceWorker' in navigator) {
 </head>
 <body>
 
-<!-- ================= LOGIN BOX ================= -->
-<div id="loginBox" style="max-width:320px;margin:40px auto;display:none">
-  <h3>Login – CNC Ball Nose Calculator</h3>
-  <input id="email" placeholder="Email" style="width:100%" /><br><br>
-  <input id="pass" type="password" placeholder="Password" style="width:100%" /><br><br>
-  <button onclick="login()">Login</button>
-  <p id="msg" style="color:red"></p>
+<!-- ================= LICENSE ACTIVATION ================= -->
+<div id="activateBox" style="max-width:360px;margin:40px auto;display:none">
+  <h3>Activate CNC Ball Nose Calculator</h3>
+  <input id="licenseKey" placeholder="Enter License Key" style="width:100%" />
+  <br><br>
+  <button onclick="activate()">Activate</button>
+  <p id="actMsg" style="color:red"></p>
 </div>
 
 <!-- ================= PROTECTED APP ================= -->
@@ -2241,33 +2241,54 @@ if ('serviceWorker' in navigator) {
 
 <!-- ================= LOGIN SCRIPT ================= -->
 <script>
-async function login() {
-  const email = document.getElementById("email").value;
-  const pass = document.getElementById("pass").value;
-  const msg = document.getElementById("msg");
+/* ===== LICENSE VALIDATION ===== */
 
-  try {
-    const res = await fetch("licenses.json", { cache: "no-store" });
-    const users = await res.json();
-    const user = users.find(u => u.email === email && u.password === pass);
+function isValidLicense(key) {
+  if (!key.startsWith("MUV-26-")) return false;
 
-    if (!user) {
-      msg.textContent = "Invalid login";
-      return;
-    }
+  const parts = key.split("-");
+  if (parts.length !== 4) return false;
 
-    localStorage.setItem("cnc_login", "yes");
-    localStorage.setItem("cnc_user", email);
-    location.reload();
-  } catch {
-    msg.textContent = "Login needs internet once";
-  }
+  const randomPart = parts[2];
+  const checksum = parts[3];
+
+  // 🔒 SECRET RULE (do not change casually)
+  const secret = "MUV@CNC";
+  const expected = btoa(randomPart + secret).substring(0, 4);
+
+  return checksum === expected;
 }
 
-if (localStorage.getItem("cnc_login") === "yes") {
+function activate() {
+  const key = document.getElementById("licenseKey").value.trim().toUpperCase();
+  const msg = document.getElementById("actMsg");
+
+  if (!isValidLicense(key)) {
+    msg.textContent = "Invalid license key";
+    return;
+  }
+
+  const deviceId = navigator.userAgent;
+
+  localStorage.setItem("cnc_license", key);
+  localStorage.setItem("cnc_device", deviceId);
+
+  location.reload();
+}
+
+/* ===== CHECK LICENSE ON LOAD ===== */
+
+const savedKey = localStorage.getItem("cnc_license");
+const savedDevice = localStorage.getItem("cnc_device");
+
+if (
+  savedKey &&
+  savedDevice === navigator.userAgent &&
+  isValidLicense(savedKey)
+) {
   document.getElementById("app").style.display = "block";
 } else {
-  document.getElementById("loginBox").style.display = "block";
+  document.getElementById("activateBox").style.display = "block";
 }
 </script>
 
