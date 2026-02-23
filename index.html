@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-<!-- DOMAIN LOCK -->
+<!-- ================= DOMAIN LOCK ================= -->
 <script>
 (function () {
   const ALLOWED = ["muvcnc.com", "www.muvcnc.com"];
@@ -85,7 +85,7 @@ if ('serviceWorker' in navigator) {
 </head>
 <body>
 
-<!-- LOGIN BOX -->
+<!-- ================= LOGIN BOX ================= -->
 <div id="loginBox" style="max-width:320px;margin:40px auto;display:none">
   <h3>Login – CNC Ball Nose Calculator</h3>
   <input id="email" placeholder="Email" style="width:100%" /><br><br>
@@ -94,12 +94,9 @@ if ('serviceWorker' in navigator) {
   <p id="msg" style="color:red"></p>
 </div>
 
-<!-- ===================== -->
-<!-- PROTECTED APPLICATION -->
-<!-- ===================== -->
+<!-- ================= PROTECTED APP ================= -->
 <div id="app" style="display:none">
 
-  <!-- ===== YOUR ORIGINAL CALCULATOR UI ===== -->
   <div class="container">
     <h1>MOLD_BALL_APP</h1>
 
@@ -108,9 +105,9 @@ if ('serviceWorker' in navigator) {
       <option value="ALUMINIUM">ALUMINIUM</option>
       <option value="COPPER">COPPER</option>
       <option value="PREHARDEN(40HRC)">PREHARDEN(40HRC)</option>
-      <option value="SKD 11(60HRC)">SKD 11(60HRC)</option>
       <option value="SKD 61(48HRC)">SKD 61(48HRC)</option>
       <option value="SUS QUENCHING(52HRC)">SUS QUENCHING(52HRC)</option>
+      <option value="SKD 11(60HRC)">SKD 11(60HRC)</option>
     </select>
 
     <label>Operation</label>
@@ -155,124 +152,13 @@ if ('serviceWorker' in navigator) {
 
   <button id="installBtn">Install App</button>
 
-  <!-- ===== YOUR ORIGINAL DATA + CALCULATE SCRIPT ===== -->
+  <!-- ================= CALCULATOR LOGIC ================= -->
   <script>
-  /* 🔴 IMPORTANT 🔴
-  
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MOLD_BALL_APP</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" type="image/png" href="logo192.png" />
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      margin: 0;
-      padding: 20px;
-    }
-    .container {
-      max-width: 700px;
-      margin: 0 auto;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    }
-    h1 {
-      text-align: center;
-      color: #b30000;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-      color: #333;
-    }
-    select {
-      width: 100%;
-      padding: 10px;
-      background-color: #f8f8f8;
-      color: #b30000;
-      border: 2px solid #ccc;
-      border-radius: 6px;
-      margin-top: 5px;
-    }
-    button {
-      margin-top: 20px;
-      padding: 12px;
-      width: 100%;
-      background-color: #b30000;
-      color: white;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #990000;
-    }
-    #installBtn {
-      display: none;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 10px 20px;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      z-index: 999;
-    }
-    .output {
-      margin-top: 20px;
-      padding: 15px;
-      background-color: #e6ffe6;
-      border-left: 5px solid #28a745;
-      border-radius: 6px;
-    }
-  </style>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js');
-    }
-  </script>
-</head>
-<body>
-  <div class="container">
-    <h1>MOLD_BALL_APP</h1>
+  /* YOUR FULL ORIGINAL DATA OBJECT */
+  /* (UNCHANGED – EXACTLY AS YOU PROVIDED) */
 
-    <label>Material</label>
-    <select id="material"><option value="ALUMINIUM">ALUMINIUM</option><option value="COPPER">COPPER</option><option value="PREHARDEN(40HRC)">PREHARDEN(40HRC)</option><option value="SKD 11(60HRC)">SKD 11(60HRC)</option><option value="SKD 61(48HRC)">SKD 61(48HRC)</option><option value="SUS QUENCHING(52HRC)">SUS QUENCHING(52HRC)</option></select>
-
-    <label>Operation</label>
-    <select id="operation"><option value="FINISHING">Finishing</option><option value="ROUGHING">Roughing</option></select>
-
-    <label>Cutter Diameter</label>
-    <select id="cutter"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="8">8</option><option value="10">10</option><option value="12">12</option></select>
-
-    <label>L/D Ratio</label>
-    <select id="ld"><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
-
-    <button onclick="calculate()">Calculate</button>
-
-    <div class="output" id="output" style="display:none;">
-      <p><strong>Cutter Dia:</strong> <span id="outDia"></span></p>
-      <p><strong>Ap:</strong> <span id="outAp"></span></p>
-      <p><strong>Ae:</strong> <span id="outAe"></span></p>
-      <p><strong>RPM:</strong> <span id="outRPM"></span></p>
-      <p><strong>Feed:</strong> <span id="outFeed"></span></p>
-    </div>
-  </div>
-
-  <button id="installBtn">Install App</button>
-
-  <script>
-    const data = {
-  "PREHARDEN(40HRC)ROUGHING13": {
+  const data = { /* 🔴 KEEP YOUR FULL DATA HERE (UNCHANGED) 🔴 */ };
+"PREHARDEN(40HRC)ROUGHING13": {
     "dia": 1,
     "ap": 0.08,
     "ae": 0.54,
@@ -2311,61 +2197,50 @@ if ('serviceWorker' in navigator) {
   }
 };
 
-    function calculate() {
-      const key = document.getElementById("material").value +
-                  document.getElementById("operation").value.toUpperCase() +
-                  document.getElementById("cutter").value +
-                  document.getElementById("ld").value;
+  function calculate() {
+    const key =
+      document.getElementById("material").value +
+      document.getElementById("operation").value.toUpperCase() +
+      document.getElementById("cutter").value +
+      document.getElementById("ld").value;
 
-      const result = data[key];
-      const output = document.getElementById("output");
-      if (result) {
-        document.getElementById("outDia").textContent = result.dia;
-        document.getElementById("outAp").textContent = result.ap;
-        document.getElementById("outAe").textContent = result.ae;
-        document.getElementById("outRPM").textContent = result.rpm;
-        document.getElementById("outFeed").textContent = result.feed;
-        output.style.display = "block";
-      } else {
-        output.style.display = "block";
-        output.innerHTML = "<p>No data found for this combination.</p>";
-      }
+    const result = data[key];
+    const output = document.getElementById("output");
+
+    if (result) {
+      document.getElementById("outDia").textContent = result.dia;
+      document.getElementById("outAp").textContent = result.ap;
+      document.getElementById("outAe").textContent = result.ae;
+      document.getElementById("outRPM").textContent = result.rpm;
+      document.getElementById("outFeed").textContent = result.feed;
+      output.style.display = "block";
+    } else {
+      output.style.display = "block";
+      output.innerHTML = "<p>No data found for this combination.</p>";
     }
+  }
 
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      const installBtn = document.getElementById("installBtn");
-      installBtn.style.display = "inline-block";
-      installBtn.addEventListener("click", () => {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(() => {
-          installBtn.style.display = "none";
-        });
-      });
-    });
-  </script>
-</body>
-</html>
-
-     PASTE YOUR FULL:
-     const data = { ... };
-     function calculate() { ... };
-     (FROM YOUR OLD WORKING FILE)
-     RIGHT HERE — WITHOUT CHANGING ANYTHING
-  */
-
-  // Example footer line (keep this):
   document.getElementById("licenseUser").textContent =
     localStorage.getItem("cnc_user") || "Licensed User";
+
+  let deferredPrompt;
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const btn = document.getElementById("installBtn");
+    btn.style.display = "inline-block";
+    btn.onclick = () => {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => {
+        btn.style.display = "none";
+      });
+    };
+  });
   </script>
 
 </div>
 
-<!-- ================= -->
-<!-- LOGIN SCRIPT ONLY -->
-<!-- ================= -->
+<!-- ================= LOGIN SCRIPT ================= -->
 <script>
 async function login() {
   const email = document.getElementById("email").value;
