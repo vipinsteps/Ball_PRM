@@ -85,13 +85,51 @@ if ('serviceWorker' in navigator) {
 </head>
 <body>
 
-<!-- ================= LICENSE ACTIVATION ================= -->
+  <!-- ================= LICENSE ACTIVATION ================= -->
 <div id="activateBox" style="max-width:360px;margin:40px auto;display:none">
+
   <h3>Activate CNC Ball Nose Calculator</h3>
-  <input id="licenseKey" placeholder="Enter License Key" style="width:100%" />
+
+  <!-- BUY LICENSE BUTTON -->
+  <button
+    style="
+      width:100%;
+      background:#007bff;
+      color:white;
+      padding:12px;
+      border:none;
+      border-radius:8px;
+      margin-bottom:15px;
+      font-size:16px;
+    "
+    onclick="window.open('https://google.com','_blank')">
+    Buy License
+  </button>
+
+  <!-- LICENSE INPUT -->
+  <input
+    id="licenseKey"
+    placeholder="Enter License Key"
+    style="width:100%;padding:10px"
+  />
+
   <br><br>
-  <button onclick="activate()">Activate</button>
-  <p id="actMsg" style="color:red"></p>
+
+  <button
+    style="
+      width:100%;
+      background:#b30000;
+      color:white;
+      padding:12px;
+      border:none;
+      border-radius:8px;
+      font-size:16px;
+    "
+    onclick="activate()">
+    Activate
+  </button>
+
+  <p id="actMsg" style="color:red;margin-top:10px"></p>
 </div>
 
 <!-- ================= PROTECTED APP ================= -->
